@@ -90,11 +90,46 @@ DECLARE
     SELECT   deda.username
     FROM     dba_epg_dad_authorization deda
     WHERE    deda.dad_name = 'STUDENT_DAD';
+
+  /* Verify a DAD authorization. */
+  CURSOR v
+  ( cv_dad_name  VARCHAR2 ) IS
+    SELECT   cfg.dad_name
+    ,        cfg.username
+    ,        CASE
+               WHEN cfg.username = 'ANONYMOUS' THEN 'Anonymous'
+               WHEN auth.username IS NULL THEN
+                 CASE
+                   WHEN cfg.username IS NULL THEN 'Dynamic'
+                   ELSE 'Dynamic Restricted'
+                 END
+               ELSE 'Static'
+             END auth_schema
+    FROM    (SELECT   extractValue( value(dad)
+                      ,            '/servlet/servlet-name'
+                      ,            'xmlns="http://xmlns.oracle.com/xdb/xdbconfig.xsd"') dad_name
+             ,        extractValue( value(dad)
+                      ,            '/servlet/plsql/database-username'
+                      ,            'xmlns="http://xmlns.oracle.com/xdb/xdbconfig.xsd"') username
+             FROM     xdb.xdb$config cfg CROSS JOIN
+                      TABLE(XMLSequence(extract( cfg.object_value
+                                       ,        '/xdbconfig/sysconfig/protocolconfig/httpconfig'
+                                       ||       '/webappconfig/servletconfig/servlet-list'
+                                       ||       '/servlet[servlet-language="PL/SQL"]'
+                                       ,        'xmlns="http://xmlns.oracle.com/xdb/xdbconfig.xsd"'))) dad) cfg,
+                      dba_epg_dad_authorization auth
+    WHERE    cfg.dad_name = auth.dad_name(+)
+    AND      cfg.username = auth.username(+)
+    AND      cfg.dad_name = cv_dad_name;
 BEGIN
   FOR i IN c(lv_dad_name) LOOP
-    dbms_epg.authorize_dad(
-      dad_name => lv_dad_name
-    , user => i.username);
+    OPEN v(lv_dad_name);
+    IF v%NOTFOUND THEN
+      dbms_epg.authorize_dad(
+        dad_name => lv_dad_name
+      , user => i.username);
+    END IF;
+    CLOSE v;
   END LOOP;
 END;
 /
