@@ -63,7 +63,7 @@ BEGIN
     INTO   lv_configxml
     FROM   dual;
 
-    dbms_output.put_line('Element inserted.');
+    dbms_output.put_line('Anonymous element inserted.');
   ELSE
     /* Update existing element. */
     SELECT updateXML
@@ -74,7 +74,7 @@ BEGIN
     INTO   lv_configxml
     FROM   dual;
 
-    dbms_output.put_line('Element updated.');
+    dbms_output.put_line('Anonymous element updated.');
   END IF;
 
   /* Configure the node element. */
@@ -125,9 +125,12 @@ BEGIN
   OPEN c(lv_path_name, lv_dad_name);
   FETCH c INTO lv_result;
   IF c%NOTFOUND THEN
+      dbms_output.put_line('Created '||lv_dad_name||' DAD.');
     dbms_epg.create_dad(
       dad_name => lv_dad_name
     , path =>     lv_path_name);
+  ELSE
+    dbms_output.put_line(lv_dad_name||' DAD already exists.');
   END IF;
   CLOSE c;
 END;
@@ -143,7 +146,7 @@ DECLARE
 
   /* Declare variables. */
   lv_dad_name   VARCHAR2(80) := 'STUDENT_DAD';
-  lv_authority  AUTH_SCHEMA;
+  lv_authority  DAD_AUTHORIZATION;
 
   /* Declare DAD discovery. */
   CURSOR c
@@ -187,9 +190,12 @@ BEGIN
     OPEN v(lv_dad_name);
     FETCH v INTO lv_authority;
     IF v%NOTFOUND THEN
+      dbms_output.put_line('Authorize '||lv_dad_name||' DAD.');
       dbms_epg.authorize_dad(
         dad_name => lv_dad_name
       , user => i.username);
+    ELSE
+      dbms_output.put_line(lv_dad_name||' DAD already authorized.');
     END IF;
     CLOSE v;
   END LOOP;
@@ -245,6 +251,8 @@ BEGIN
           dad_name => lv_parameter.dad_name
         , attr_name => lv_parameter.parameter_name
         , attr_value => lv_parameter.parameter_value);
+    ELSE
+      dbms_output.put_line(lv_parameter.dad_name||' DAD already has the '||lv_parameter.parameter_name||' parameter.');
     END IF;
     CLOSE c;
   END LOOP;
