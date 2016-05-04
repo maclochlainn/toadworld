@@ -8,7 +8,7 @@
 ||      and how to verify an encrypted password with user credentials.
 || -------------------------------------------------------------------
 ||  Instructions:
-||    You should run this as the SYSTEM user inside 
+||    You should run this as the STUDENT user inside 
 || -------------------------------------------------------------------
 ||  Revisions:
 ||    
