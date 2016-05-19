@@ -60,7 +60,7 @@ BEGIN
   (  css_s.NEXTVAL
   , 'blue-gray'
   , '<style>'||CHR(10)
-  ||'  table {background-color:#ffffff}'||CHR(10)
+  ||'  table {background-color:#ffffff;border-style:solid;border-width: 5px;}'||CHR(10)
   ||'  th.c1 {font-size:18px;font-family:Verdana, Verdana, san-serif;color:#ffffff;font-weight:bold;text-align:center;background-color:#3bbfff;width:50px;}'||CHR(10)
   ||'  th.c2 {font-size:18px;font-family:Verdana, Verdana, san-serif;color:#ffffff;font-weight:bold;text-align:center;background-color:#3bbfff;width:550px;}'||CHR(10)
   ||'  th.c3 {font-size:18px;font-family:Verdana, Verdana, san-serif;color:#ffffff;font-weight:bold;text-align:center;background-color:#3bbfff;width:100px;}'||CHR(10)
@@ -150,7 +150,7 @@ CREATE OR REPLACE
     htp.line;
 
     /* Build HTML table with the PL/SQL toolkit. */
-    htp.tableopen( cborder => 'style="border-style:solid;border-width: 5px;"');
+    htp.tableopen;
     htp.tablerowopen;
     htp.tableheader( cvalue      => '#'
                    , cattributes => 'class="c1"' );

@@ -17,8 +17,7 @@
 ||    You can call this with the following URL if you're testing on
 ||    a standalone instance on the localhost:
 ||
-||    http://localhost:8080/db/html_table_values?ids=1006&ids=1014
-||
+||    http://localhost:8080/db/html_table_values?film_title=star&film_rating=pg&film_media=blu-ray
 || -------------------------------------------------------------------
 ||  Revisions:
 ||    
@@ -61,7 +60,7 @@ BEGIN
   (  css_s.NEXTVAL
   , 'blue-gray'
   , '<style>'||CHR(10)
-  ||'  table {background-color:#ffffff}'||CHR(10)
+  ||'  table {background-color:#ffffff;border-style:solid;border-width: 5px;}'||CHR(10)
   ||'  th.c1 {font-size:18px;font-family:Verdana, Verdana, san-serif;color:#ffffff;font-weight:bold;text-align:center;background-color:#3bbfff;width:50px;}'||CHR(10)
   ||'  th.c2 {font-size:18px;font-family:Verdana, Verdana, san-serif;color:#ffffff;font-weight:bold;text-align:center;background-color:#3bbfff;width:550px;}'||CHR(10)
   ||'  th.c3 {font-size:18px;font-family:Verdana, Verdana, san-serif;color:#ffffff;font-weight:bold;text-align:center;background-color:#3bbfff;width:100px;}'||CHR(10)
@@ -156,7 +155,7 @@ CREATE OR REPLACE
     htp.line;
 
     /* Open the HTML table. */
-    htp.tableopen( cborder => 'style="border-style:solid;border-width: 5px;"');
+    htp.tableopen;
     htp.tablerowopen;
     htp.tableheader( cvalue      => '#'
                    , cattributes => 'class="c1"' );
