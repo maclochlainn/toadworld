@@ -6,7 +6,6 @@
 ||  Description:
 ||    - Creates a set of grants and synonyms to support the examples.
 ||
-
 || -------------------------------------------------------------------
 ||  Instructions:
 ||    You should run this as the SYSTEM user.
