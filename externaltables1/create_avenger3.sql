@@ -34,7 +34,6 @@ CREATE TABLE avenger
       DISCARDFILE 'UPLOAD':'avenger.dis'
       LOGFILE     'UPLOAD':'avenger.log'
       FIELDS
-      OPTIONALLY ENCLOSED BY "'"
       MISSING FIELD VALUES ARE NULL
       ( avenger_id     POSITION (1:4)
       , first_name     POSITION (5:24)
