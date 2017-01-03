@@ -17,10 +17,10 @@
 */
 
 -- Drop avenger table.
-DROP TABLE avenger;
+DROP TABLE avenger_import;
 
 -- Create an avenger table.
-CREATE TABLE avenger
+CREATE TABLE avenger_import
 ( avenger_id      NUMBER
 , first_name      VARCHAR2(20)
 , last_name       VARCHAR2(20)
